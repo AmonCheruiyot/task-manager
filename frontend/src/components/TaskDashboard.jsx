@@ -48,18 +48,18 @@ export default function TaskDashboard({
 
   // Undo/Notification state
   const [notification, setNotification] = useState(null);
-  const [deletedTask, setDeletedTask] = useState(null);
+  const [undoPayload, setUndoPayload] = useState(null); // holds deleted/edited/added task
   const [undoTimeout, setUndoTimeout] = useState(null);
 
-  const showNotification = (msg, undoTask = null) => {
+  const showNotification = (msg, undoData = null) => {
     setNotification(msg);
-    if (undoTask) setDeletedTask(undoTask);
+    setUndoPayload(undoData);
 
     if (undoTimeout) clearTimeout(undoTimeout);
 
     const timeout = setTimeout(() => {
       setNotification(null);
-      setDeletedTask(null);
+      setUndoPayload(null);
     }, 3000);
 
     setUndoTimeout(timeout);
@@ -67,15 +67,31 @@ export default function TaskDashboard({
 
   const handleDelete = (task) => {
     removeTask(task.id);
-    showNotification(`🗑️ Task "${task.title}" deleted`, task);
+    showNotification(`🗑️ Task "${task.title}" deleted`, {
+      type: "delete",
+      task,
+    });
   };
 
   const handleUndo = () => {
-    if (deletedTask) {
-      addTask(deletedTask);
-      setDeletedTask(null);
+    if (!undoPayload) return;
+
+    if (undoPayload.type === "delete") {
+      addTask(undoPayload.task);
       setNotification("✅ Task restored");
     }
+
+    if (undoPayload.type === "edit") {
+      updateTask(undoPayload.task.id, undoPayload.task);
+      setNotification("✅ Edit undone");
+    }
+
+    if (undoPayload.type === "add") {
+      removeTask(undoPayload.task.id);
+      setNotification("❌ Task creation undone");
+    }
+
+    setUndoPayload(null);
   };
 
   if (loading) {
@@ -106,7 +122,7 @@ export default function TaskDashboard({
       {notification && (
         <div className="fixed top-6 right-6 bg-white border border-gray-200 shadow-lg rounded-xl px-4 py-3 text-sm text-gray-800 animate-fadeIn z-50 flex items-center gap-4">
           <span>{notification}</span>
-          {deletedTask && (
+          {undoPayload && (
             <button
               onClick={handleUndo}
               className="text-blue-600 font-medium hover:underline"
@@ -306,7 +322,12 @@ export default function TaskDashboard({
               </div>
               <TaskForm
                 onSubmit={(task) => {
-                  addTask(task);
+                  addTask(task).then((newTask) => {
+                    showNotification(`✅ Task "${task.title}" added`, {
+                      type: "add",
+                      task: newTask,
+                    });
+                  });
                   setShowForm(false);
                 }}
                 onCancel={() => setShowForm(false)}
@@ -333,7 +354,12 @@ export default function TaskDashboard({
                 initialData={editingTask}
                 submitLabel="Update Task"
                 onSubmit={(updated) => {
+                  const oldCopy = { ...editingTask };
                   updateTask(editingTask.id, updated);
+                  showNotification(`✏️ Task "${updated.title}" updated`, {
+                    type: "edit",
+                    task: oldCopy,
+                  });
                   setEditingTask(null);
                 }}
                 onCancel={() => setEditingTask(null)}
