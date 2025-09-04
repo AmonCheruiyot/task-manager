@@ -106,11 +106,11 @@ cd task-manager
 cd backend
 
 # Create a virtual environment
-python3 -m venv venv
+pipenv install
 
 # Activate the virtual environment
 # On Linux/macOS:
-source venv/bin/activate
+pipenv shell
 # On Windows (Command Prompt):
 .\venv\Scripts\activate
 # On Windows (PowerShell):
@@ -119,11 +119,9 @@ source venv/bin/activate
 # Install Python dependencies
 pip install -r requirements.txt
 
-# Set up environment variables
-cp .env.example .env
 # Edit .env file with your configuration
 
-# (Optional) Seed the database with sample data
+# Seed the database with sample data
 python seed.py
 
 # Start the Flask development server
