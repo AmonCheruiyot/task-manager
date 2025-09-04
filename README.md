@@ -154,8 +154,21 @@ The frontend application will be running at `http://localhost:3000`.
 6. Use the **search and filter** options to manage your tasks
 7. View your productivity stats on the **Analytics Dashboard**
 
+## Screenshots
 ---
+<img width="1366" height="768" alt="Image" src="https://github.com/user-attachments/assets/9c48c4b4-465e-488d-b311-a0bc01a24997" />
 
+
+<img width="1366" height="768" alt="Image" src="https://github.com/user-attachments/assets/f9061754-5bdb-405f-b302-b4d2d3f615a9" />
+
+
+<img width="1366" height="768" alt="Image" src="https://github.com/user-attachments/assets/0db6b150-0021-4c26-a89b-2d99fc9b8bfa" />
+
+
+<img width="1366" height="768" alt="Image" src="https://github.com/user-attachments/assets/9350c370-d2b6-4200-a373-f6c0ad0bc83d" />
+
+
+<img width="1366" height="768" alt="Image" src="https://github.com/user-attachments/assets/6bc6df6e-a844-407f-bdde-3c732358c0b0" />
 ## 🛠️ Tech Stack
 
 | Layer          | Technology |
