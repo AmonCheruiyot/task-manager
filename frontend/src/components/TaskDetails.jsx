@@ -1,3 +1,5 @@
+import React from "react";
+
 export default function TaskDetails({ task, setPage }) {
   if (!task) {
     return (
@@ -17,69 +19,56 @@ export default function TaskDetails({ task, setPage }) {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100 p-6">
-      <div className="bg-white p-8 rounded-xl shadow-2xl max-w-lg w-full transform transition-transform duration-300 hover:scale-105">
+      <div className="bg-white p-8 rounded-xl shadow-2xl max-w-lg w-full">
+        {/* Title */}
         <h1 className="text-3xl font-extrabold text-gray-900 mb-2 border-b-2 border-blue-500 pb-2">
           {task.title}
         </h1>
+
+        {/* Description */}
         <p className="text-gray-700 mb-6 italic">
           {task.description || "No description"}
         </p>
+
+        {/* Meta Info */}
         <div className="space-y-3 text-sm text-gray-600">
-          <p className="flex justify-between items-center border-t pt-3">
-            <span className="font-semibold text-gray-800">Status:</span>
-            <span
-              className={`font-medium px-3 py-1 rounded-full text-white ${
-                task.status === "Completed"
-                  ? "bg-green-500"
-                  : task.status === "In Progress"
-                  ? "bg-yellow-500"
-                  : "bg-red-500"
-              }`}
-            >
-              {task.status}
-            </span>
+          <p className="flex justify-between border-t pt-3">
+            <span className="font-semibold">Status:</span>
+            <span>{task.status}</span>
           </p>
-          <p className="flex justify-between items-center border-t pt-3">
-            <span className="font-semibold text-gray-800">Due Date:</span>
-            <span>{task.due_date || "—"}</span>
-          </p>
-          <p className="flex justify-between items-center border-t pt-3">
-            <span className="font-semibold text-gray-800">Created At:</span>
+          <p className="flex justify-between border-t pt-3">
+            <span className="font-semibold">Due Date:</span>
             <span>
-              {task.created_at
-                ? new Date(task.created_at).toLocaleString()
+              {task.due_date
+                ? new Date(task.due_date).toLocaleDateString("en-GB")
                 : "—"}
             </span>
           </p>
-          <p className="flex justify-between items-center border-t pt-3">
-            <span className="font-semibold text-gray-800">Updated At:</span>
+          <p className="flex justify-between border-t pt-3">
+            <span className="font-semibold">Created At:</span>
+            <span>
+              {task.created_at
+                ? new Date(task.created_at).toLocaleString("en-GB")
+                : "—"}
+            </span>
+          </p>
+          <p className="flex justify-between border-t pt-3">
+            <span className="font-semibold">Updated At:</span>
             <span>
               {task.updated_at
-                ? new Date(task.updated_at).toLocaleString()
+                ? new Date(task.updated_at).toLocaleString("en-GB")
                 : "—"}
             </span>
           </p>
         </div>
-        <div className="mt-8 text-center">
+
+        {/* Footer Actions */}
+        <div className="mt-8 flex justify-between">
           <button
             onClick={() => setPage("dashboard")}
-            className="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium transition-colors duration-200"
+            className="text-blue-600 hover:text-blue-800 font-medium"
           >
-            <svg
-              className="w-4 h-4 mr-2"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M10 19l-7-7m0 0l7-7m-7 7h18"
-              ></path>
-            </svg>
-            Back to Dashboard
+            ← Back to Dashboard
           </button>
         </div>
       </div>
