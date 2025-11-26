@@ -29,6 +29,11 @@ def create_app():
     with app.app_context():
         db.create_all()
 
+    # ✅ Add this endpoint so Render doesn't give 404
+    @app.route("/")
+    def index():
+        return {"message": "Flask backend running successfully on Render!"}
+
     app.register_blueprint(api_blueprint)
 
     return app
