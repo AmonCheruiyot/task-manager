@@ -1,6 +1,5 @@
 flask
 flask-cors
 flask-sqlalchemy
-python-dotenv
-pytest
-faker
+gunicorn==21.2.0
+python-dotenv==1.0.0
