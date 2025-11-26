@@ -6,14 +6,21 @@ from dotenv import load_dotenv
 from .extensions import db
 from .routes import api_blueprint
 
-load_dotenv()
-
 def create_app():
+    load_dotenv()
     app = Flask(__name__)
-
-    db_url = os.getenv("DATABASE_URL", "sqlite:///tasks.db")
-    app.config["SQLALCHEMY_DATABASE_URI"] = db_url
-    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+    
+    # Production database configuration
+    database_url = os.getenv('DATABASE_URL')
+    if database_url:
+        # Handle postgres:// → postgresql:// for SQLAlchemy 1.4+
+        if database_url.startswith('postgres://'):
+            database_url = database_url.replace('postgres://', 'postgresql://', 1)
+        app.config['SQLALCHEMY_DATABASE_URI'] = database_url
+    else:
+        app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///instance/tasks.db'
+    
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     CORS(app, resources={r"/api/*": {"origins": ["http://localhost:3000", "http://127.0.0.1:3000"]}})
 
