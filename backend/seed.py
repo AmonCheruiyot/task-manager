@@ -2,7 +2,7 @@ from faker import Faker
 from random import choice, randint
 from datetime import datetime, timedelta
 from app import create_app, db
-from models import Task, STATUS_VALUES
+from app.models import Task, STATUS_VALUES
 
 fake = Faker()
 
